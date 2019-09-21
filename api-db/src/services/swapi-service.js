@@ -21,18 +21,55 @@ export default class SwapiService {
 
 
   // Поиск карт по классу персонажа
-  getCardsByClass(hero) {
-    return this.getResourse(`/classes/${hero}/`);
+  async getCardsByClass(hero) {
+    const res = await this.getResourse(`/classes/${hero}/`);
+    return this._transformClass(res);
   }
+  // Изменяем заранее массив получаемый по api для методов getCardsByName и getCardsByClass
+  _transformClass(res) {
+    let matc = res.filter((obj) => {
+      if(obj.type !== 'Hero' && obj.img !== undefined && obj.playerClass !== 'Neutral' && obj.cardSet === 'Classic') {
+        return true;
+      }
+      return false;
+    })
+    let filtCards = [];
+    matc.forEach((obj) => {
+      filtCards.push({cardId: obj.cardId,
+                      cardSet: obj.cardSet,
+                      name: obj.name,
+                      cost: obj.cost,
+                      playerClass: obj.playerClass,
+                      img: obj.img})
+    })
+    return filtCards;
+  }
+
   // Поиск карты по названию, не обязательно полному
   async getCardsByName(name) {
     const res = await this.getResourse(`/search/${name}/`);
-    return res;
+    return this._transformClass(res);
   }
   // Поиск карты по названию рассы Demon Dragon Mech Murloc Beast Pirate Totem
   async getCardsByRace(race) {
     const res = await this.getResourse(`/races/${race}/`);
     return res;
+  }
+  // Поиск карты героя
+  async getCardsByIdHero(hero) {
+    const res = await this.getResourse(`/${hero}/`);
+    return this._transformHero(res);
+  }
+  // Изменяем заранее объект получаемый по api для метода getCardsByHero
+  _transformHero(res) {
+    let re = res[0];
+    return {
+      idHero: null,
+      name: re.name,
+      classHero: re.playerClass,
+      summary: null,
+      img: re.img,
+    }
   }
 };
 
@@ -40,62 +77,72 @@ export default class SwapiService {
 // создаем потомка SwapiService
 const swapi = new SwapiService();
 
-swapi.getResourse('').then((allCards) => {
+swapi.getCardsByIdHero('HERO_05').then((hero) => {
+  console.log(hero);
+})
+
+swapi.getCardsByClass('Rogue').then((hero) => {
+  console.log(hero);
+})
+
+swapi.getCardsByName('Fire').then((hero) => {
+  console.log(hero);
+})
+// swapi.getResourse('').then((allCards) => {
 // Удаляю объеты без ссылок на озображения, объекты не явл существами
-  let delCardImg = allCards.Classic.filter((obj) => {
-    if(obj.type !== 'Hero' && obj.img !== undefined && obj.playerClass !== 'Neutral') {
-      return true;
-    }
-    return false;
-  })
-  // console.log(delCardImg);
+  // let delCardImg = allCards.Classic.filter((obj) => {
+  //   if(obj.type !== 'Hero' && obj.img !== undefined && obj.playerClass !== 'Neutral') {
+  //     return true;
+  //   }
+  //   return false;
+  // })
   //// Создаю новый массив оставляя из старого массива только нужные св-ва
-  let filtCards = [];
-  delCardImg.forEach((obj) => {
-    filtCards.push({cardId: obj.cardId,
-                    cardSet: obj.cardSet,
-                    name: obj.name,
-                    playerClass: obj.playerClass,
-                    img: obj.img})
-  })
-  console.log(filtCards);
+  // let filtCards = [];
+  // delCardImg.forEach((obj) => {
+  //   filtCards.push({cardId: obj.cardId,
+  //                   cardSet: obj.cardSet,
+  //                   name: obj.name,
+  //                   playerClass: obj.playerClass,
+  //                   img: obj.img})
+  // })
+  // console.log(filtCards);
 
   // Поиск по имени карт
   // Переманная с поисковой строкой
-  let sear = 'Ar'
-  // Фильтр с условием что значение name начинается с sear
-  let matc = filtCards.filter((obj) => {
-    let isSear = obj.name.startsWith(sear)
-    if(isSear === true) {
-      return true;
-    }
-    return false;
-  })
-  // console.log(...matc);
-  matc.forEach((obj) => {
-    console.log(obj.name)
-  })
-})
+//   let sear = 'Ar'
+//   // Фильтр с условием что значение name начинается с sear
+//   let matc = filtCards.filter((obj) => {
+//     let isSear = obj.name.startsWith(sear)
+//     if(isSear === true) {
+//       return true;
+//     }
+//     return false;
+//   })
+//   // console.log(...matc);
+//   matc.forEach((obj) => {
+//     console.log(obj.name)
+//   })
+// })
 
 
-let sear = 'L'
-swapi.getCardsByName(sear).then((allCards) => {
-  let matc = allCards.filter((obj) => {
-    let isSear = obj.name.startsWith(sear)
-    if(isSear === true && obj.type !== 'Hero' && obj.img !== undefined && obj.playerClass !== 'Neutral' && obj.cardSet === 'Classic') {
-      return true;
-    }
-    return false;
-  })
-  console.log(matc);
-})
+// let sear = 'L'
+// swapi.getCardsByName(sear).then((allCards) => {
+//   let matc = allCards.filter((obj) => {
+//     let isSear = obj.name.startsWith(sear)
+//     if(isSear === true && obj.type !== 'Hero' && obj.img !== undefined && obj.playerClass !== 'Neutral' && obj.cardSet === 'Classic') {
+//       return true;
+//     }
+//     return false;
+//   })
+//   console.log(matc);
+// })
 
-swapi.getCardsByClass("Rogue").then((allCards) => {
-  console.log(allCards);
-})
+// swapi.getCardsByClass("Rogue").then((allCards) => {
+//   console.log(allCards);
+// })
 
-swapi.getCardsByRace("Beast").then((allCards) => {
-  allCards.forEach((obj) => {
-    console.log(obj.name)
-  })
-})
+// swapi.getCardsByRace("Beast").then((allCards) => {
+//   allCards.forEach((obj) => {
+//     console.log(obj.name)
+//   })
+// })

@@ -7,8 +7,9 @@
 }
 
 .class-player .class-image {
-  width: 150px;
+  width: 250px;
   height: auto;
+  margin-top: -50px;
   border-radius: 10px;
   margin-right: 1rem;
 }
