@@ -45,6 +45,90 @@ export default class SwapiService {
     return filtCards;
   }
 
+
+
+
+  // Поиск карт класс Hunter
+  getCardsHunter = async () => {
+    const res = await this.getResourse(`/classes/Hunter/`);
+    return this._transformClassHunter(res);
+  }
+  // Изменяем заранее массив получаемый по api для методов getCardsHunter
+  _transformClassHunter(res) {
+    let matc = res.filter((obj) => {
+      if(obj.type !== 'Hero' && obj.img !== undefined && obj.playerClass === 'Hunter' && obj.cardSet === 'Classic') {
+        return true;
+      }
+      return false;
+    })
+    let filtCards = [];
+    matc.forEach((obj) => {
+      filtCards.push({cardId: obj.cardId,
+                      cardSet: obj.cardSet,
+                      name: obj.name,
+                      cost: obj.cost,
+                      playerClass: obj.playerClass,
+                      img: obj.img})
+    })
+    return filtCards;
+  }
+
+
+  // Поиск карт класс Mage
+  getCardsMage = async () => {
+    const res = await this.getResourse(`/classes/Mage/`);
+    return this._transformClassMage(res);
+  }
+  // Изменяем заранее массив получаемый по api для методов getCardsMage
+  _transformClassMage(res) {
+    let matc = res.filter((obj) => {
+      if(obj.type !== 'Hero' && obj.img !== undefined && obj.playerClass === 'Mage' && obj.cardSet === 'Classic') {
+        return true;
+      }
+      return false;
+    })
+    let filtCards = [];
+    matc.forEach((obj) => {
+      filtCards.push({cardId: obj.cardId,
+                      cardSet: obj.cardSet,
+                      name: obj.name,
+                      cost: obj.cost,
+                      playerClass: obj.playerClass,
+                      img: obj.img})
+    })
+    return filtCards;
+  }
+
+
+  // Поиск карт класс Priest
+  getCardsPriest = async () => {
+    const res = await this.getResourse(`/classes/Priest/`);
+    return this._transformClassPriest(res);
+  }
+  // Изменяем заранее массив получаемый по api для методов getCardsPriest
+  _transformClassPriest(res) {
+    let matc = res.filter((obj) => {
+      if(obj.type !== 'Hero' && obj.img !== undefined && obj.playerClass === 'Priest' && obj.cardSet === 'Classic') {
+        return true;
+      }
+      return false;
+    })
+    let filtCards = [];
+    matc.forEach((obj) => {
+      filtCards.push({cardId: obj.cardId,
+                      cardSet: obj.cardSet,
+                      name: obj.name,
+                      cost: obj.cost,
+                      playerClass: obj.playerClass,
+                      img: obj.img})
+    })
+    return filtCards;
+  }
+
+
+
+
+
   // Поиск карты по названию, не обязательно полному
   async getCardsByName(name) {
     const res = await this.getResourse(`/search/${name}/`);
@@ -62,12 +146,30 @@ export default class SwapiService {
   }
   // Изменяем заранее объект получаемый по api для метода getCardsByHero
   _transformHero(res) {
+    // console.log(res[0])
     let re = res[0];
     return {
       idHero: null,
       name: re.name,
-      classHero: re.playerClass,
+      playerClass: re.playerClass,
       summary: null,
+      img: re.img,
+    }
+  }
+
+    // Поиск карты героя
+  async getCardsById(id) {
+    const res = await this.getResourse(`/${id}/`);
+    return this._transformId(res);
+  }
+  // Изменяем заранее объект получаемый по api для метода getCardsByHero
+  _transformId(res) {
+    // console.log(res[0])
+    let re = res[0];
+    return {
+      name: re.name,
+      cost: re.cost,
+      cardSet: re.cardSet,
       img: re.img,
     }
   }
@@ -77,17 +179,17 @@ export default class SwapiService {
 // создаем потомка SwapiService
 const swapi = new SwapiService();
 
-swapi.getCardsByIdHero('HERO_05').then((hero) => {
-  console.log(hero);
+swapi.getCardsById("TU4a_006").then((hero) => {
+  // console.log(hero);
 })
 
-swapi.getCardsByClass('Rogue').then((hero) => {
-  console.log(hero);
-})
+// swapi.getCardsByClass('Rogue').then((hero) => {
+//   console.log(hero);
+// })
 
-swapi.getCardsByName('Fire').then((hero) => {
-  console.log(hero);
-})
+// swapi.getCardsByName("NEW1_036").then((hero) => {
+//   console.log(hero);
+// })
 // swapi.getResourse('').then((allCards) => {
 // Удаляю объеты без ссылок на озображения, объекты не явл существами
   // let delCardImg = allCards.Classic.filter((obj) => {

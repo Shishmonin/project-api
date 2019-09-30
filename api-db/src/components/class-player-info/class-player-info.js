@@ -11,7 +11,7 @@ export default class ClassPlayerInfo extends Component {
   swapiService = new SwapiService();
 
   state = {
-    classHero: null,
+    playerClass: null,
     name: null,
     summary: null,
     img: null,
@@ -19,9 +19,9 @@ export default class ClassPlayerInfo extends Component {
     error: false,
   };
 
-  constructor() {
-    super();
+  componentDidMount() {
     this.updateHero();
+    // this.interval = setInterval(this.updateHero, 5000);
   }
 
   onError = (err) => {
@@ -31,13 +31,13 @@ export default class ClassPlayerInfo extends Component {
     });
   };
 
-  updateHero() {
+  updateHero = () => {
     // Mage TU4a_006 Hunter HERO_05 Priest HERO_09
     const idHeros = ["HERO_05", "TU4a_006", "HERO_09"];
     // Рандомное значение из массива
-    const idHero = idHeros[Math.floor(Math.random()*idHeros.length)];
-
-    this.swapiService.getCardsByIdHero(idHero)
+    const idHer = idHeros[Math.floor(Math.random()*idHeros.length)];
+    // console.log(idHer);
+    this.swapiService.getCardsByIdHero(idHer)
     .then((hero) => {
       let res = hero;
       if(res.name === 'Rexxar'){
@@ -48,9 +48,9 @@ export default class ClassPlayerInfo extends Component {
         res.summary = 'Джайне нет равных в превращении маны в разные болезненные штуки. У нее в колоде множество заклинаний прямого урона — в частности, мощные зачистки стола «Чародейский взрыв» и «Волна огня», — и она на них, прямо скажем, не скупится. Прибавьте к этому силу героя, которая легко расправляется с мелкими существами, и множество разных секретов: перед вами гибкий и чрезвычайно опасный противник.'
       }
       this.setState({
-        idHero,
+        idHer,
         name: res.name,
-        classHero: res.playerClass,
+        playerClass: res.playerClass,
         summary: res.summary,
         img: res.img,
         loading: false,
@@ -83,7 +83,7 @@ export default class ClassPlayerInfo extends Component {
 // которая может ломать верстку
 const ViewClassHero = ({hero}) => {
 
-  const { idHero, classHero, name, summary, img } = hero;
+  const { idHero, playerClass, name, summary, img } = hero;
 
   return (
     <React.Fragment>
@@ -95,7 +95,7 @@ const ViewClassHero = ({hero}) => {
         <ul className="list-group list-group-flush">
           <li className="list-group-item">
             <span className="term">Класс:</span>
-            <span> {classHero} </span>
+            <span> {playerClass} </span>
           </li>
           <li className="list-group-item">
             <span className="term">Имя:</span>
