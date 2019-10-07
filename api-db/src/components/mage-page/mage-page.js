@@ -7,17 +7,17 @@ import ClassDetails from '../class-details';
 import Row from '../row';
 import SwapiService from '../../services/swapi-service';
 
-import './hunter-page.css'
+import './mage-page.css'
 
 
 
-export default class HunterPage extends Component {
+export default class MagePage extends Component {
 
   swapiService = new SwapiService();
 
   state = {
     selectedCard: null,
-    clasCar: this.swapiService.getCardsHunter,
+    clasCar: this.swapiService.getCardsMage,
   };
 
   onCardSelected = (cardId) => {

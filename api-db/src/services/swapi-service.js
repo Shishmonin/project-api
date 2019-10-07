@@ -167,6 +167,7 @@ export default class SwapiService {
     // console.log(res[0])
     let re = res[0];
     return {
+      cardId: re.cardId,
       name: re.name,
       cost: re.cost,
       cardSet: re.cardSet,
@@ -183,9 +184,9 @@ swapi.getCardsById("TU4a_006").then((hero) => {
   // console.log(hero);
 })
 
-// swapi.getCardsByClass('Rogue').then((hero) => {
-//   console.log(hero);
-// })
+swapi.getCardsByClass('Priest').then((hero) => {
+  // console.log(hero);
+})
 
 // swapi.getCardsByName("NEW1_036").then((hero) => {
 //   console.log(hero);

@@ -1,70 +1,39 @@
-import React, { Component } from 'react';
-
+import React from 'react';
+import PropTypes from 'prop-types';
 import SwapiService from '../../services/swapi-service';
-// import Spinner from '../spinner';
 import {WithData} from '../hoc-helpers';
 
 import './item-list.css';
 
 const ItemList = (props) => {
 
-    const { data, onItemListSelected, children: renderLabel } = props;
+  const { data, onItemListSelected, children: renderLabel, } = props;
 
-    const items = data.map((item) => {
-      const { cardId } = item;
-      const label = renderLabel(item);
-
-      return (
-        <li className="list-group-item"
-            key={cardId}
-            onClick={() => onItemListSelected(cardId)}>
-          <p>{label}</p>
-        </li>
-      );
-    });
+  const items = data.map((item) => {
+    const { cardId } = item;
+    const label = renderLabel(item);
 
     return (
-      <ul className="item-list list-group">
-        {items}
-      </ul>
+      <li className="list-group-item"
+          key={cardId}
+          onClick={() => onItemListSelected(cardId)}>
+        <p>{label}</p>
+      </li>
     );
-  }
+  });
 
-// Обертка отвечает за логику и работаес входящим компонентои и вход props
-// const WithData = (View, getData) => {
+  return (
+    <ul className="item-list list-group">
+      {items}
+    </ul>
+  );
+};
 
-//   return class extends Component {
+ItemList.prototype = {
+  data: PropTypes.arrayOf(PropTypes.object)
+}
 
-//     state = {
-//       data: null,
-//     };
+// const { getCardsMage } = new SwapiService();
+const { clasCar } = new SwapiService();
 
-//     componentDidMount() {
-//       // Передан массив с карточками
-//       // const { getData } = this.props;
-//       console.log(getData);
-//       // Массив положили в  state
-//       getData()
-//           .then((data) => {
-//             this.setState({
-//               data
-//             });
-//           });
-//     }
-
-//     render () {
-
-//       const { data } = this.state;
-
-//       if(!data) {
-//         return <Spinner />
-//       };
-
-//       return <View {...this.props} data={data} />
-//     }
-//   }
-// };
-
-const { getCardsHunter } = new SwapiService();
-
-export default WithData(ItemList, getCardsHunter);
+export default WithData(ItemList, clasCar);

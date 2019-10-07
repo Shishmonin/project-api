@@ -6,18 +6,19 @@ import ItemList from '../item-list/item-list';
 import ClassDetails from '../class-details';
 import Row from '../row';
 import SwapiService from '../../services/swapi-service';
+import {withRouter} from 'react-router-dom';
 
-import './hunter-page.css'
+import './priest-page.css'
 
 
 
-export default class HunterPage extends Component {
+export default class PriestPage extends Component {
 
   swapiService = new SwapiService();
 
   state = {
     selectedCard: null,
-    clasCar: this.swapiService.getCardsHunter,
+    clasCar: this.swapiService.getCardsPriest,
   };
 
   onCardSelected = (cardId) => {
@@ -27,23 +28,22 @@ export default class HunterPage extends Component {
     });
   };
 
-
   render() {
 
     if(this.state.hasError) {
       return <ErrorIndicator />
     }
 
-    const itemList = (
-      <ItemList onItemListSelected={this.onCardSelected}
-      getData={this.state.clasCar}>
+    // const itemList = (
+    //   <ItemList onItemListSelected={this.onCardSelected}
+    //   getData={this.state.clasCar}>
 
-        {(item) => (
-          `${item.name} (Стоимость по мане:${item.cost})`
-        )}
+    //     {(item) => (
+    //       `${item.name} (Стоимость по мане:${item.cost})`
+    //     )}
 
-      </ItemList>
-    );
+    //   </ItemList>
+    // );
 
     const classDetails = (
       <ClassDetails cardId={this.state.selectedCard}/>
@@ -51,7 +51,14 @@ export default class HunterPage extends Component {
 
     return (
       <ErrorBoundry>
-        <Row left={itemList} right={classDetails}/>
+        <ItemList onItemListSelected={this.onCardSelected}
+        getData={this.state.clasCar}>
+
+          {(item) => (
+            `${item.name} (Стоимость по мане:${item.cost})`
+          )}
+
+        </ItemList>
       </ErrorBoundry>
     );
   }

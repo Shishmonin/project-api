@@ -21,7 +21,7 @@ export default class ClassPlayerInfo extends Component {
 
   componentDidMount() {
     this.updateHero();
-    // this.interval = setInterval(this.updateHero, 5000);
+    this.interval = setInterval(this.updateHero, 3000);
   }
 
   onError = (err) => {

@@ -2,6 +2,7 @@ import React , { Component } from 'react';
 
 import SwapiService from '../../services/swapi-service';
 import Spinner from '../spinner';
+import {Link} from 'react-router-dom';
 
 import './class-details.css';
 
@@ -18,6 +19,7 @@ export default class ClassDetails extends Component {
 
   componentDidMount() {
     this.updatePerson();
+    console.log(this.state.person)
   };
   // Метод обновления компонента с условием изменения входных параметров props
   componentDidUpdate(prevProps) {
@@ -66,7 +68,7 @@ export default class ClassDetails extends Component {
 
 const ViewInfo = ({person}) => {
 
-  const {person: {img, cost, cardSet, name}} = person;
+  const {person: {img, cost, cardSet, name, cardId}} = person;
 
   return (
     <React.Fragment>
@@ -74,6 +76,7 @@ const ViewInfo = ({person}) => {
           src = {img} />
       <div className="card-body">
         <h4>{name}</h4>
+        <h4>{cardId}</h4>
         <ul className="list-group list-group-flush">
           <li className="list-group-item">
             <span className="term">Набор: </span>
@@ -84,6 +87,9 @@ const ViewInfo = ({person}) => {
             <span>{cost}</span>
           </li>
         </ul>
+        <Link to="/">
+          <button>Назад</button>
+        </Link>
       </div>
     </React.Fragment>
   )

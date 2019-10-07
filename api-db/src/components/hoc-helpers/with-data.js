@@ -16,7 +16,7 @@ const WithData = (View, getData) => {
       // const { getData } = this.props;
       console.log(getData);
       // Массив положили в  state
-      getData()
+      this.props.getData()
           .then((data) => {
             this.setState({
               data

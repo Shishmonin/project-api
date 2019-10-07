@@ -1,5 +1,7 @@
 .person-details {
   display: flex;
+  max-width: 700px;
+  margin: 0 auto 0;
   /* margin-top: 0.5rem; */
   flex-direction: row;
   padding: 1rem;
@@ -16,6 +18,16 @@
   padding: .25rem;
 }
 
-.person-details .list-group-item .term{
+.list-group-item .term{
   margin-right: .5rem;
+}
+
+.person-details  button {
+  display: flex;
+  font-size: 16px;
+  margin-top: 20px;
+  background: none;
+  border: none;
+  color: #00bc8c;
+  margin-left: auto;
 }
